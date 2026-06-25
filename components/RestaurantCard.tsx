@@ -1,6 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, TouchableOpacity, View, Text } from 'react-native';
 // import { MapPinIcon } from 'react-native-heroicons/outline';
 import { StarIcon, MapPinIcon } from 'react-native-heroicons/solid';
+import { dish, StackNavigationParams } from 'screens/types';
+
+type RestaurantNavProp = NativeStackNavigationProp<StackNavigationParams, 'Restaurant'>;
 
 function RestaurantCard({
   id,
@@ -13,7 +18,7 @@ function RestaurantCard({
   dishes,
   long,
   lat,
-}: {
+} : {
   id: string;
   imgUrl: string
   title: string
@@ -21,12 +26,32 @@ function RestaurantCard({
   genre: string
   address: string
   short_desc: string
-  dishes: string[]
+  dishes: dish[]
   long: string
   lat: string
 }) {
+
+  const { navigate } = useNavigation<RestaurantNavProp>();
+
   return (
-    <TouchableOpacity className="bg-white mr-3 shadow">
+    <TouchableOpacity 
+      className="bg-white mr-3 shadow"
+      onPress={() => navigate(
+        "Restaurant", 
+        {
+          id,
+          imgUrl,
+          title,
+          rating: parseFloat(rating),
+          genre,
+          address,
+          short_desc,
+          dishes,
+          long,
+          lat
+        })
+      }
+    >
       <Image source={{ uri: imgUrl }} className="h-44 w-64 rounded-sm" />
       <View className='px-2'>
         <Text className="pt-2 text-lg font-bold">{title}</Text>
